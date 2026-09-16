@@ -4,6 +4,9 @@
 import { useState } from 'react'
 import Header from './components/Header.jsx'
 import Arrival from './components/Arrival.jsx'
+import Exhibition from './components/Exhibition.jsx'
+import FeaturedWork from './components/FeaturedWork.jsx'
+
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -20,10 +23,11 @@ function App() {
 
       <main>
         <Arrival />
+        <Exhibition />
+        <FeaturedWork />
       </main>
     </>
   )
 }
 
 export default App
-
