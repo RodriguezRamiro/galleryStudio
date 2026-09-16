@@ -1,7 +1,7 @@
 /* galleryStudio/src/App.jsx */
 
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Header from './components/Header.jsx'
 import Arrival from './components/Arrival.jsx'
@@ -18,46 +18,92 @@ import ExhibitionViewer from './components/ExhibitionViewer.jsx'
 import ArtworkData from './data/artworksData.js'
 
 function App() {
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => {
+    const savedTheme =
+      localStorage.getItem('atelier-theme')
 
-  const [isViewerOpen, setIsViewerOpen] = useState(false)
+    return savedTheme === 'dark'
+  })
 
-  const [currentArtworkIndex, setCurrentArtworkIndex] = useState(0)
+  const [isViewerOpen, setIsViewerOpen] =
+    useState(false)
 
-  const [selectedArtwork, setSelectedArtwork] = useState('')
+  const [currentArtworkIndex, setCurrentArtworkIndex] =
+    useState(0)
+
+  const [selectedArtwork, setSelectedArtwork] =
+    useState('')
+
+
+  /*
+   * Theme
+   */
+
+  useEffect(() => {
+
+    document.documentElement.dataset.theme =
+      isDark ? 'dark' : 'light'
+
+    localStorage.setItem(
+      'atelier-theme',
+      isDark ? 'dark' : 'light'
+    )
+
+  }, [isDark])
+
+
+  /*
+   * Viewer
+   */
 
   const openViewer = useCallback((index) => {
     setCurrentArtworkIndex(index)
     setIsViewerOpen(true)
   }, [])
 
+
   const closeViewer = useCallback(() => {
     setIsViewerOpen(false)
   }, [])
 
+
   const nextArtwork = useCallback(() => {
+
     setCurrentArtworkIndex(
       currentIndex =>
-        (currentIndex + 1) % ArtworkData.length
+        (currentIndex + 1) %
+        ArtworkData.length
     )
+
   }, [])
 
+
   const previousArtwork = useCallback(() => {
+
     setCurrentArtworkIndex(
       currentIndex =>
         (
           currentIndex -
           1 +
           ArtworkData.length
-        ) % ArtworkData.length
+        ) %
+        ArtworkData.length
     )
+
   }, [])
 
-  const handleArtworkChange = useCallback((artwork) => {
-    setSelectedArtwork(artwork.title)
-  }, [])
+
+  const handleArtworkChange =
+    useCallback((artwork) => {
+
+      setSelectedArtwork(
+        artwork.title
+      )
+
+    }, [])
 
 
   return (
@@ -69,32 +115,45 @@ function App() {
         setIsDark={setIsDark}
       />
 
-    <main>
+      <main>
+
         <Arrival />
 
         <Exhibition />
 
         <FeaturedWork
-            onObserve={() => {}} />
+          artwork={
+            ArtworkData[
+              ArtworkData.length - 1
+            ]
+          }
+          onObserve={() =>
+            openViewer(
+              ArtworkData.length - 1
+            )
+          }
+        />
 
         <Collection
-            onObserve={() => {}} />
+          artworks={ArtworkData}
+          onObserve={openViewer}
+        />
 
         <Atelier />
 
-        <Practice/>
+        <Practice />
 
         <Journal />
 
         <Inquiry
-            selectedArtwork={selectedArtwork}
+          selectedArtwork={selectedArtwork}
         />
 
-        </main>
+      </main>
 
-        <Footer />
+      <Footer />
 
-        <ExhibitionViewer
+      <ExhibitionViewer
         artworks={ArtworkData}
         currentIndex={currentArtworkIndex}
         isOpen={isViewerOpen}
@@ -102,7 +161,7 @@ function App() {
         onNext={nextArtwork}
         onPrevious={previousArtwork}
         onArtworkChange={handleArtworkChange}
-        />
+      />
 
     </>
   )
