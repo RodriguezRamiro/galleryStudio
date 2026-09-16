@@ -1,0 +1,1 @@
+/* galleryStudio/src/components/Footer.jsx */
