@@ -10,6 +10,8 @@ import Collection from './components/Collection.jsx'
 import Atelier from './components/Atelier.jsx'
 import Practice from './components/Practice.jsx'
 import Journal from './components/Journal.jsx'
+import Inquiry from './components/Inquiry.jsx'
+import Footer from './components/Footer.jsx'
 
 
 function App() {
@@ -41,6 +43,10 @@ function App() {
         <Practice/>
 
         <Journal />
+
+        <Inquiry />
+
+        <Footer />
 
     </main>
     </>
