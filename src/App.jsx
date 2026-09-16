@@ -6,6 +6,7 @@ import Header from './components/Header.jsx'
 import Arrival from './components/Arrival.jsx'
 import Exhibition from './components/Exhibition.jsx'
 import FeaturedWork from './components/FeaturedWork.jsx'
+import Collection from './components/Collection.jsx'
 
 
 function App() {
@@ -21,11 +22,18 @@ function App() {
         setIsDark={setIsDark}
       />
 
-      <main>
+    <main>
         <Arrival />
+
         <Exhibition />
-        <FeaturedWork />
-      </main>
+
+        <FeaturedWork
+            onObserve={() => {}} />
+            
+        <Collection
+            onObserve={() => {}} />
+
+    </main>
     </>
   )
 }
