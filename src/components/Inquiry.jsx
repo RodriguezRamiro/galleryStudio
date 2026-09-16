@@ -141,8 +141,8 @@ function Inquiry({ selectedArtwork = '' }) {
               type="text"
               id="artwork"
               name="artwork"
-              placeholder="Example"
               value={selectedArtwork}
+              placeholder="Select an artwork"
               readOnly
             />
 
