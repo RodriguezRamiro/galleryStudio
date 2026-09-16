@@ -2,24 +2,25 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-const touchStartX = useRef(0)
-const touchStartY = useRef(0)
 
 function ExhibitionViewer({
-  artworks,
-  currentIndex,
-  isOpen,
-  onClose,
-  onNext,
-  onPrevious,
-  onArtworkChange
+    artworks,
+    currentIndex,
+    isOpen,
+    onClose,
+    onNext,
+    onPrevious,
+    onArtworkChange
 }) {
-  const closeButtonRef = useRef(null)
-  const lastFocusedElement = useRef(null)
+    const closeButtonRef = useRef(null)
+    const lastFocusedElement = useRef(null)
 
-  const [showInquiry, setShowInquiry] = useState(false)
+    const [showInquiry, setShowInquiry] = useState(false)
 
-  const artwork = artworks[currentIndex]
+    const artwork = artworks[currentIndex]
+
+    const touchStartX = useRef(0)
+    const touchStartY = useRef(0)
 
   /*
    * Viewer lifecycle
