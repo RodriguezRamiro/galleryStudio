@@ -8,6 +8,8 @@ import Exhibition from './components/Exhibition.jsx'
 import FeaturedWork from './components/FeaturedWork.jsx'
 import Collection from './components/Collection.jsx'
 import Atelier from './components/Atelier.jsx'
+import Practice from './components/Practice.jsx'
+import Journal from './components/Journal.jsx'
 
 
 function App() {
@@ -35,6 +37,10 @@ function App() {
             onObserve={() => {}} />
 
         <Atelier />
+
+        <Practice/>
+
+        <Journal />
 
     </main>
     </>
