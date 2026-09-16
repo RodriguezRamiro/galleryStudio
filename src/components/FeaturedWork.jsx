@@ -3,10 +3,9 @@
 
 import artworks from '../data/artworksData.js'
 
-function FeaturedWork({ onObserve }) {
-  const featured = artworks[artworks.length - 1]
 
-  if (!featured) {
+function FeaturedWork({ artwork, onObserve }) {
+  if (!artwork) {
     return null
   }
 
@@ -19,14 +18,14 @@ function FeaturedWork({ onObserve }) {
 
         <article
           className="featured-piece artwork-entry"
-          data-catalog={featured.catalog}
+          data-catalog={artwork.catalog}
         >
 
           <figure className="artwork-image">
 
             <img
-              src={featured.image}
-              alt={`${featured.title} - symbolic oil painting`}
+              src={artwork.image}
+              alt={`${artwork.title} - symbolic oil painting`}
               loading="lazy"
             />
 
@@ -35,27 +34,27 @@ function FeaturedWork({ onObserve }) {
           <div className="artwork-details">
 
             <p className="catalog-number">
-              {featured.catalog}
+              {artwork.catalog}
             </p>
 
             <h2 id="featured-title">
-              {featured.title}
+              {artwork.title}
             </h2>
 
             <p className="artwork-meta">
 
               <span className="medium">
-                {featured.medium}
+                {artwork.medium}
               </span>
 
               <span className="year">
-                {featured.year}
+                {artwork.year}
               </span>
 
             </p>
 
             <p className="dimensions">
-              {featured.dimensions}
+              {artwork.dimensions}
             </p>
 
             <aside className="artist-statement">
@@ -65,7 +64,7 @@ function FeaturedWork({ onObserve }) {
               </h3>
 
               <p>
-                {featured.description}
+                {artwork.description}
               </p>
 
             </aside>
@@ -73,7 +72,7 @@ function FeaturedWork({ onObserve }) {
             <button
               type="button"
               className="text-link observe-work"
-              onClick={() => onObserve(featured)}
+              onClick={onObserve}
             >
               Observe →
             </button>
