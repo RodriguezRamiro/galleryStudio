@@ -1,7 +1,7 @@
 /* galleryStudio/src/App.jsx */
 
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import Header from './components/Header.jsx'
 import Arrival from './components/Arrival.jsx'
@@ -28,34 +28,36 @@ function App() {
 
   const [selectedArtwork, setSelectedArtwork] = useState('')
 
-  function openViewer(index) {
+  const openViewer = useCallback((index) => {
     setCurrentArtworkIndex(index)
     setIsViewerOpen(true)
-}
+  }, [])
 
-function closeViewer() {
+  const closeViewer = useCallback(() => {
     setIsViewerOpen(false)
-}
+  }, [])
 
-function nextArtwork() {
+  const nextArtwork = useCallback(() => {
     setCurrentArtworkIndex(
-        (currentArtworkIndex + 1) % ArtworkData.length
-        )
-    }
+      currentIndex =>
+        (currentIndex + 1) % ArtworkData.length
+    )
+  }, [])
 
-function previousArtwork() {
+  const previousArtwork = useCallback(() => {
     setCurrentArtworkIndex(
+      currentIndex =>
         (
-            currentArtworkIndex -
-            1 +
-            ArtworkData.length
-            ) % ArtworkData.length
-        )
-    }
+          currentIndex -
+          1 +
+          ArtworkData.length
+        ) % ArtworkData.length
+    )
+  }, [])
 
-    function handleArtworkChange(artwork) {
-         setSelectedArtwork(artwork.title)
-        }
+  const handleArtworkChange = useCallback((artwork) => {
+    setSelectedArtwork(artwork.title)
+  }, [])
 
 
   return (
@@ -89,7 +91,7 @@ function previousArtwork() {
         />
 
         </main>
-        
+
         <Footer />
 
         <ExhibitionViewer
