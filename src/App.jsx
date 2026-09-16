@@ -16,8 +16,13 @@ import Footer from './components/Footer.jsx'
 import ExhibitionViewer from './components/ExhibitionViewer.jsx'
 
 import ArtworkData from './data/artworksData.js'
+import useSmoothScroll from './hooks/useSmoothScroll.js'
+import useScrollReveal from './hooks/useScrollReveal.js'
 
 function App() {
+
+    useSmoothScroll()
+    useScrollReveal()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
