@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+const touchStartX = useRef(0)
+const touchStartY = useRef(0)
+
 function ExhibitionViewer({
   artworks,
   currentIndex,
@@ -202,6 +205,63 @@ function ExhibitionViewer({
     })
   }
 
+  function handleTouchStart(event) {
+
+    touchStartX.current =
+      event.changedTouches[0].screenX
+
+    touchStartY.current =
+      event.changedTouches[0].screenY
+  }
+
+
+  function handleTouchEnd(event) {
+
+    const touchEndX =
+      event.changedTouches[0].screenX
+
+    const touchEndY =
+      event.changedTouches[0].screenY
+
+    const deltaX =
+      touchEndX -
+      touchStartX.current
+
+    const deltaY =
+      touchEndY -
+      touchStartY.current
+
+    const minimumSwipe = 50
+
+
+    /*
+     * Ignore small movements and
+     * mostly vertical gestures.
+     */
+    if (
+      Math.abs(deltaX) < minimumSwipe ||
+      Math.abs(deltaX) <
+        Math.abs(deltaY)
+    ) {
+      return
+    }
+
+
+    /*
+     * Swipe left → next
+     */
+    if (deltaX < 0) {
+      onNext()
+    }
+
+    /*
+     * Swipe right → previous
+     */
+    else {
+      onPrevious()
+    }
+  }
+
   return (
     <div
       className="exhibition-viewer active"
@@ -216,7 +276,11 @@ function ExhibitionViewer({
         ) {
           onClose()
         }
-      }}
+
+
+    }}
+    onTouchStart={handleTouchStart}
+    onTouchEnd={handleTouchEnd}
     >
 
       <button
