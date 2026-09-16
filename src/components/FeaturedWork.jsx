@@ -1,7 +1,7 @@
 /* galleryStudio/src/components/FeaturedWork.jsx */
 
 
-import artworks from '../data/artworks.js'
+import artworks from '../data/artworksData.js'
 
 function FeaturedWork({ onObserve }) {
   const featured = artworks[artworks.length - 1]

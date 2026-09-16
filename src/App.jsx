@@ -2,6 +2,7 @@
 
 
 import { useState } from 'react'
+
 import Header from './components/Header.jsx'
 import Arrival from './components/Arrival.jsx'
 import Exhibition from './components/Exhibition.jsx'
@@ -12,11 +13,50 @@ import Practice from './components/Practice.jsx'
 import Journal from './components/Journal.jsx'
 import Inquiry from './components/Inquiry.jsx'
 import Footer from './components/Footer.jsx'
+import ExhibitionViewer from './components/ExhibitionViewer.jsx'
 
+import ArtworkData from './data/artworksData.js'
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   const [isDark, setIsDark] = useState(false)
+
+  const [isViewerOpen, setIsViewerOpen] = useState(false)
+
+  const [currentArtworkIndex, setCurrentArtworkIndex] = useState(0)
+
+  const [selectedArtwork, setSelectedArtwork] = useState('')
+
+  function openViewer(index) {
+    setCurrentArtworkIndex(index)
+    setIsViewerOpen(true)
+}
+
+function closeViewer() {
+    setIsViewerOpen(false)
+}
+
+function nextArtwork() {
+    setCurrentArtworkIndex(
+        (currentArtworkIndex + 1) % ArtworkData.length
+        )
+    }
+
+function previousArtwork() {
+    setCurrentArtworkIndex(
+        (
+            currentArtworkIndex -
+            1 +
+            ArtworkData.length
+            ) % ArtworkData.length
+        )
+    }
+
+    function handleArtworkChange(artwork) {
+         setSelectedArtwork(artwork.title)
+        }
+
 
   return (
     <>
@@ -44,11 +84,24 @@ function App() {
 
         <Journal />
 
-        <Inquiry />
+        <Inquiry
+            selectedArtwork={selectedArtwork}
+        />
 
+        </main>
+        
         <Footer />
 
-    </main>
+        <ExhibitionViewer
+        artworks={ArtworkData}
+        currentIndex={currentArtworkIndex}
+        isOpen={isViewerOpen}
+        onClose={closeViewer}
+        onNext={nextArtwork}
+        onPrevious={previousArtwork}
+        onArtworkChange={handleArtworkChange}
+        />
+
     </>
   )
 }

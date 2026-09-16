@@ -1,7 +1,7 @@
 /* galleryStudio/src/components/Collection. */
 
 
-import artworks from '../data/artworks.js'
+import artworks from '../data/artworksData.js'
 import ArtworkCard from './ArtworkCard.jsx'
 
 function Collection({ onObserve }) {
