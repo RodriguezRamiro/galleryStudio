@@ -7,6 +7,7 @@ import Arrival from './components/Arrival.jsx'
 import Exhibition from './components/Exhibition.jsx'
 import FeaturedWork from './components/FeaturedWork.jsx'
 import Collection from './components/Collection.jsx'
+import Atelier from './components/Atelier.jsx'
 
 
 function App() {
@@ -29,9 +30,11 @@ function App() {
 
         <FeaturedWork
             onObserve={() => {}} />
-            
+
         <Collection
             onObserve={() => {}} />
+
+        <Atelier />
 
     </main>
     </>
