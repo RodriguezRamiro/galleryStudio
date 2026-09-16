@@ -1,7 +1,6 @@
 /* galleryStudio/src/components/ExhibitionViewer.jsx */
 
-
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function ExhibitionViewer({
   artworks,
@@ -15,11 +14,14 @@ function ExhibitionViewer({
   const closeButtonRef = useRef(null)
   const lastFocusedElement = useRef(null)
 
+  const [showInquiry, setShowInquiry] = useState(false)
+
   const artwork = artworks[currentIndex]
 
   /*
-   * Remember the element that opened the viewer
-   * and move focus into the viewer.
+   * Viewer lifecycle
+   *
+   * Runs whenever the viewer opens or closes.
    */
   useEffect(() => {
     if (!isOpen) {
@@ -52,9 +54,50 @@ function ExhibitionViewer({
       typeof lastFocusedElement.current.focus === 'function'
     ) {
       lastFocusedElement.current.focus()
+
       lastFocusedElement.current = null
     }
   }, [isOpen])
+
+  /*
+   * 30-second inquiry timer.
+   *
+   * The timer resets whenever:
+   *
+   * - the viewer opens
+   * - the selected artwork changes
+   */
+  useEffect(() => {
+    if (!isOpen || !artwork) {
+      setShowInquiry(false)
+      return
+    }
+
+    setShowInquiry(false)
+
+    const timer = window.setTimeout(() => {
+      setShowInquiry(true)
+    }, 30000)
+
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [isOpen, currentIndex, artwork])
+
+  /*
+   * Tell App which artwork is currently being viewed.
+   */
+  useEffect(() => {
+    if (!isOpen || !artwork) {
+      return
+    }
+
+    onArtworkChange?.(artwork)
+  }, [
+    isOpen,
+    artwork,
+    onArtworkChange
+  ])
 
   /*
    * Keyboard controls.
@@ -65,6 +108,7 @@ function ExhibitionViewer({
     }
 
     function handleKeyDown(event) {
+
       if (event.key === 'Escape') {
         event.preventDefault()
         onClose()
@@ -80,7 +124,11 @@ function ExhibitionViewer({
         onPrevious()
       }
 
+      /*
+       * Focus trap.
+       */
       if (event.key === 'Tab') {
+
         const focusableElements =
           document.querySelectorAll(
             '.exhibition-viewer button:not([disabled]), .exhibition-viewer a[href]'
@@ -90,9 +138,13 @@ function ExhibitionViewer({
           return
         }
 
-        const firstElement = focusableElements[0]
+        const firstElement =
+          focusableElements[0]
+
         const lastElement =
-          focusableElements[focusableElements.length - 1]
+          focusableElements[
+            focusableElements.length - 1
+          ]
 
         if (
           event.shiftKey &&
@@ -100,7 +152,9 @@ function ExhibitionViewer({
         ) {
           event.preventDefault()
           lastElement.focus()
-        } else if (
+        }
+
+        else if (
           !event.shiftKey &&
           document.activeElement === lastElement
         ) {
@@ -110,10 +164,16 @@ function ExhibitionViewer({
       }
     }
 
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener(
+      'keydown',
+      handleKeyDown
+    )
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener(
+        'keydown',
+        handleKeyDown
+      )
     }
   }, [
     isOpen,
@@ -123,26 +183,23 @@ function ExhibitionViewer({
   ])
 
   /*
-   * Notify the parent whenever the selected
-   * artwork changes.
-   */
-  useEffect(() => {
-    if (!isOpen || !artwork) {
-      return
-    }
-
-    onArtworkChange?.(artwork)
-  }, [
-    isOpen,
-    artwork,
-    onArtworkChange
-  ])
-
-  /*
-   * Don't render the viewer while closed.
+   * Don't render anything when closed.
    */
   if (!isOpen || !artwork) {
     return null
+  }
+
+  function handleInquiryClick() {
+    onClose()
+
+    requestAnimationFrame(() => {
+      document
+        .querySelector('#inquiry')
+        ?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+    })
   }
 
   return (
@@ -153,7 +210,10 @@ function ExhibitionViewer({
       aria-hidden="false"
       aria-labelledby="viewer-title"
       onClick={(event) => {
-        if (event.target === event.currentTarget) {
+        if (
+          event.target ===
+          event.currentTarget
+        ) {
           onClose()
         }
       }}
@@ -202,10 +262,16 @@ function ExhibitionViewer({
             {artwork.description}
           </p>
 
-          <div className="viewer-inquiry">
+          <div
+            className={`viewer-inquiry ${
+              showInquiry ? 'visible' : ''
+            }`}
+          >
 
             <a
-              href={artwork.purchaseUrl || '#'}
+              href={
+                artwork.purchaseUrl || '#'
+              }
               className="text-link purchase-link viewer-purchase"
               target="_blank"
               rel="noopener noreferrer"
@@ -213,13 +279,13 @@ function ExhibitionViewer({
               Purchase →
             </a>
 
-            <a
-              href="#inquiry"
+            <button
+              type="button"
               className="text-link inquiry-link"
-              onClick={onClose}
+              onClick={handleInquiryClick}
             >
               Own This Piece
-            </a>
+            </button>
 
           </div>
 
