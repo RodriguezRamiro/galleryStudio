@@ -1,7 +1,11 @@
 /* galleryStudio/src/components/Header.jsx */
 
 
+
 import { useEffect } from 'react'
+import './header.css'
+
+
 
 function Header({
   isMenuOpen,
