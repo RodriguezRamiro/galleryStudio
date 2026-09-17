@@ -16,7 +16,7 @@ function Exhibition() {
           </p>
 
           <h2 id="exhibition-title">
-            The Presence of Time
+            Rubedo
           </h2>
 
           <p>
